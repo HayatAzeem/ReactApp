@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
+import { ProductContext } from '../utils/Context'; // Adjust the import path as necessary
+import {nanoid} from 'nanoid'; // Import nanoid for unique IDs if needed
 
 const Create = () => {
+  const { products, setproducts } = useContext(ProductContext);
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
   const [description, setDescription] = useState("")
@@ -10,14 +13,26 @@ const Create = () => {
 
     const AddProductHandler = (e) => {
         e.preventDefault();
+
+        if(title.trim().length<5 || image.trim().length<5 || description.trim().length<5 || price.trim().length<1 || category.trim().length<5){
+            alert("Please fill all the fields correctly.");
+            return; // Stop the function if validation fails
+        }
         const product = {
+            id: nanoid(),  // Generate a unique ID using nanoid if needed
             title,
             image,
             description,
             price,
             category
         };
-        console.log(product);
+        setproducts([...products, product]);
+        console.log({ title, image, description, price, category })
+        // setTitle("");
+        // setImage("");
+        // setDescription("");
+        // setPrice("");
+        // setCategory("");
     };
 
   return (
